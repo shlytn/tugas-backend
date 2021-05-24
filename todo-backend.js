@@ -3,7 +3,7 @@ const app = express()
 const cors = require('cors')
 
 const mongoose = require('mongoose')
-const todoList = require('./model')
+const todoList = require('./models/todo-schema')
 const connectionString = "mongodb+srv://anyone:justpassword@cluster0.hrts3.mongodb.net/database-tugas?retryWrites=true&w=majority"
 
 app.use(express.json())
@@ -17,9 +17,19 @@ mongoose.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: t
   console.log("Connect to Database...")
 })
 
+app.get('/', (req, res) => {
+  res.send(`<html>
+    <body>
+      <form action="/todo" method="post">
+        <input name="deskripsi" />
+        <button>Add</button>
+      </form>
+    </body>
+  </html>`)
+})
+
 app.post('/todo', async (req, res) => {
   let todo = new todoList({
-    // _id: new mongoose.Types.ObjectId(),
     deskripsi: req.body.deskripsi
   })
 
