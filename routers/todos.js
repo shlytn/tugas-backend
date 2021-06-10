@@ -3,8 +3,10 @@ const router = express.Router()
 const todoList = require('../models/todo-schema')
 
 router.post('/todo', async (req, res) => {
+  const deskripsi = req.body.deskripsi
+
   let todo = new todoList({
-    deskripsi: req.body.deskripsi
+    deskripsi: deskripsi
   })
 
   console.log(todo._id)
@@ -12,7 +14,7 @@ router.post('/todo', async (req, res) => {
   await todo.save()
   .then(data => {
     // res.status(200).redirect('/todo')
-    res.status(200).json(data)
+    res.status(200).json({ _id: data._id, deskripsi: deskripsi })
   })
   .catch(err => {
     res.status(404).json({ message: err})
