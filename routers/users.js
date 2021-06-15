@@ -54,7 +54,7 @@ router.delete('/user/:id', auth, async (req, res) => {
   await users.findByIdAndRemove(req.params.id)
   .exec((err, result) => {
     if (err) { res.sendStatus(404) }
-    else { res.status.json(result) }
+    else { res.json(result) }
   })
 })
 
