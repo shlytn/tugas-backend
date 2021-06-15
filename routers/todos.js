@@ -9,12 +9,10 @@ router.post('/todo', async (req, res) => {
     deskripsi: deskripsi
   })
 
-  console.log(todo._id)
-
   await todo.save()
   .then(data => {
     // res.status(200).redirect('/todo')
-    res.status(200).json({ _id: data._id, deskripsi: deskripsi })
+    res.status(200).json({ _id: data._id, deskripsi })
   })
   .catch(err => {
     res.status(404).json({ message: err})
@@ -22,7 +20,7 @@ router.post('/todo', async (req, res) => {
 })
 
 router.get('/todo', async (req, res) => {
-  let todo = await todoList.find().select('-__v')
+  await todoList.find().select('-__v')
   .then(data => {
     res.status(200).json(data)
   })
@@ -39,6 +37,7 @@ router.delete('/todo/:id', async (req, res) => {
         message: "List with Id" + req.params.id + "was not found"
       })
     }
+    res.json(result)
   })
   .catch(err => {
     res.json({ message: err})
