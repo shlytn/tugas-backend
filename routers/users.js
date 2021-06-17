@@ -23,6 +23,15 @@ const ifExist = (req, res, next) => {
   })
 }
 
+const ifOnly = (req, res, next) => {
+  users.estimatedDocumentCount((err, count) => {
+    if(count === 1) 
+      res.send("Sorry, delete is prohibited. There's only one user left!")
+    else 
+      next()
+  })
+}
+
 router.post('/user', adminAuth, ifExist, async (req, res) => {
   let username = req.body.username
   let password = req.body.password
@@ -50,7 +59,7 @@ router.get('/user', auth, async (req, res) => {
   })
 })
 
-router.delete('/user/:id', auth, async (req, res) => {
+router.delete('/user/:id', auth, ifOnly, async (req, res) => {
   await users.findByIdAndRemove(req.params.id)
   .exec((err, result) => {
     if (err) { res.sendStatus(404) }
